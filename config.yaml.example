@@ -1,0 +1,7 @@
+# Optional per-user identity overrides for clone.sh.
+# Copy this file to config.yaml and edit, or leave config.yaml absent to use
+# your existing git config (user.email) and default SSH setup.
+#
+# config.yaml is gitignored, so your personal values stay out of version control.
+git_email: dymurray@redhat.com
+ssh_key: ~/.ssh/dymurray_rsa

@@ -1,0 +1,17 @@
+upstream_org: konveyor
+midstream_org: migtools
+midstream_prefix: mta-
+branch: main
+repos:
+- operator
+- java-analyzer-bundle
+- analyzer-lsp
+- tackle2-hub
+- tackle2-ui
+- static-report
+- kantra
+- tackle2-addon-analyzer
+- tackle2-addon-discovery
+- tackle2-addon-platform
+- kai
+- c-sharp-analyzer-provider

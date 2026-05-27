@@ -1,0 +1,12 @@
+# Per-user identity overrides for clone.sh (use config.yaml.example as a template)
+config.yaml
+
+tackle2-*
+kai/
+c-sharp-*
+analyzer-lsp/
+kantra/
+java-analyzer-bundle/
+rulesets/
+static-report/
+operator/
