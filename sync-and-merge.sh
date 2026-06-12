@@ -408,6 +408,22 @@ for REPO in $REPOS; do
         update_submodules "$REPO" "$BRANCH"
     fi
 
+    # Run repo-specific post-sync hook if present (regenerate lock files, etc.)
+    if ([ "$NEEDS_UPDATE" = true ] || [ "$NEEDS_SUBMODULE_UPDATE" = true ]) && [ -x "scripts/post-sync.sh" ]; then
+        print_status "Running scripts/post-sync.sh..."
+        if ! ./scripts/post-sync.sh; then
+            print_error "scripts/post-sync.sh failed in $REPO"
+            cd ..
+            FAILED_REPOS="$FAILED_REPOS $REPO"
+            echo ""
+            continue
+        fi
+        if [ -n "$(git status --porcelain)" ] && $COMMIT_CHANGES; then
+            git add -u
+            git commit -m "post-sync: regenerate generated files for $BRANCH"
+        fi
+    fi
+
     # Push changes if requested (only if we made changes)
     if [ "$NEEDS_UPDATE" = true ] || [ "$NEEDS_SUBMODULE_UPDATE" = true ]; then
         if $PUSH_CHANGES; then
