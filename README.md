@@ -119,7 +119,22 @@ Merges the latest upstream changes into each midstream branch and pushes. Mergin
 
 For each repo it: fetches both remotes → resets the local branch to `midstream/<branch>` →
 merges `origin/<branch>` (no fast-forward edits) → updates submodules and commits them →
-pushes to `midstream/<branch>`. Repos already up-to-date are skipped.
+runs the repo's `scripts/post-sync.sh` hook if present (see below) → pushes to
+`midstream/<branch>`. Repos already up-to-date are skipped.
+
+### Post-sync hook
+
+If a managed repo has an executable `scripts/post-sync.sh`, it runs after a successful
+merge (or submodule update). Use it to regenerate files derived from upstream content —
+e.g. hash-locked `requirements.txt` for Hermeto/Konflux builds, or other midstream-specific
+build artifacts. Any tracked-file changes are committed as `post-sync: regenerate
+generated files for <branch>`. Honors `--no-commit`. A non-zero exit aborts the push and
+marks the repo failed.
+
+Often paired with a `.gitattributes merge=ours` rule so upstream's version of the
+generated file doesn't fight the merge. `clone.sh` registers the `ours` driver
+(`git config merge.ours.driver true`) on every clone so the attribute actually takes
+effect — git ships the merge *strategy* but not the per-file *driver*.
 
 ### Flags
 
