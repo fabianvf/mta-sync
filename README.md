@@ -131,6 +131,11 @@ build artifacts. Any tracked-file changes are committed as `post-sync: regenerat
 generated files for <branch>`. Honors `--no-commit`. A non-zero exit aborts the push and
 marks the repo failed.
 
+Often paired with a `.gitattributes merge=ours` rule so upstream's version of the
+generated file doesn't fight the merge. `clone.sh` registers the `ours` driver
+(`git config merge.ours.driver true`) on every clone so the attribute actually takes
+effect — git ships the merge *strategy* but not the per-file *driver*.
+
 ### Flags
 
 | Flag | Default | Effect |

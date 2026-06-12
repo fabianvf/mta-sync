@@ -126,6 +126,11 @@ for REPO in $REPOS; do
         print_status "Using default SSH configuration"
     fi
 
+    # Register the `ours` merge driver so `.gitattributes merge=ours` actually
+    # takes effect on this clone (git ships the strategy but not the per-file
+    # driver). Used by overlays whose generated content is regenerated post-sync.
+    git config merge.ours.driver true
+
     # Check if midstream remote exists
     if git remote | grep -q "^midstream$"; then
         print_status "Midstream remote already exists, updating URL..."
