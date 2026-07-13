@@ -267,6 +267,12 @@ for REPO in $REPOS; do
         continue
     fi
 
+    # Ensure the `ours` merge driver exists on THIS clone so overlay repos'
+    # `.gitattributes merge=ours` (e.g. mta-kai's generated requirements.txt / uv.lock)
+    # actually takes effect on merge. Idempotent -- makes the sync self-sufficient on any
+    # clone, without depending on a prior clone.sh run or a manual `git config`.
+    git config merge.ours.driver true
+
     # Store current branch for potential restoration
     CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
